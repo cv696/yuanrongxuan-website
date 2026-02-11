@@ -100,18 +100,18 @@ const goBack = () => {
     <div v-if="currentQuestion" class="mt-6 space-y-3 px-3">
       <button
         v-for="(option, idx) in currentQuestion.options"
-        :key="idx"
+        :key="currentQuestion.id + '-' + idx"
         type="button"
-        class="group w-full rounded-2xl border border-neutral-800/90 bg-black/40 px-4 py-3.5 text-left shadow-sm transition hover:border-amber-400/70 hover:bg-amber-500/10 active:scale-[0.99]"
+        class="w-full rounded-2xl border border-neutral-800/90 bg-black/40 px-4 py-3.5 text-left shadow-sm transition active:scale-[0.99]"
         @click="handleSelect(idx)"
       >
         <div class="flex items-center gap-3">
           <div
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-700/80 bg-neutral-900/80 text-[11px] text-neutral-300 group-hover:border-amber-400/80 group-hover:text-amber-300"
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-700/80 bg-neutral-900/80 text-[11px] text-neutral-300"
           >
             {{ String.fromCharCode(65 + idx) }}
           </div>
-          <p class="text-[14px] leading-relaxed text-neutral-100 group-hover:text-amber-100">
+          <p class="text-[14px] leading-relaxed text-neutral-100">
             {{ option.label }}
           </p>
         </div>
