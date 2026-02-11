@@ -7,6 +7,8 @@ import { QUESTIONS } from '../data/logic'
 const router = useRouter()
 
 const currentIndex = ref(0)
+const selectedIndex = ref<number | null>(null)
+const isTransitioning = ref(false)
 
 const scores = ref<Record<ElementType, number>>({
   Metal: 0,
@@ -23,6 +25,12 @@ const currentQuestion = computed(() => QUESTIONS[currentIndex.value] ?? QUESTION
 const progressPercent = computed(() => Math.round(((currentIndex.value + 1) / total) * 100))
 
 const handleSelect = (optionIndex: number) => {
+  if (isTransitioning.value) return
+
+  selectedIndex.value = optionIndex
+  isTransitioning.value = true
+
+  window.setTimeout(() => {
   const question = currentQuestion.value!
   const option = question.options[optionIndex]!
   const score = option.score as Partial<Record<ElementType, number>>
@@ -40,6 +48,10 @@ const handleSelect = (optionIndex: number) => {
     })
     router.push({ path: '/result', query })
   }
+
+  selectedIndex.value = null
+  isTransitioning.value = false
+  }, 160)
 }
 
 const goBack = () => {
@@ -102,16 +114,27 @@ const goBack = () => {
         v-for="(option, idx) in currentQuestion.options"
         :key="currentQuestion.id + '-' + idx"
         type="button"
-        class="w-full rounded-2xl border border-neutral-800/90 bg-black/40 px-4 py-3.5 text-left shadow-sm transition active:scale-[0.99]"
+        class="w-full rounded-2xl px-4 py-3.5 text-left shadow-sm transition active:scale-[0.99]"
+        :class="[
+          selectedIndex === idx
+            ? 'border-amber-400/80 bg-amber-500/15'
+            : 'border-neutral-800/90 bg-black/40'
+        ]"
         @click="handleSelect(idx)"
       >
         <div class="flex items-center gap-3">
           <div
-            class="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-700/80 bg-neutral-900/80 text-[11px] text-neutral-300"
+            class="flex h-8 w-8 items-center justify-center rounded-full border text-[11px]"
+            :class="selectedIndex === idx
+              ? 'border-amber-400/80 bg-amber-500/20 text-amber-100'
+              : 'border-neutral-700/80 bg-neutral-900/80 text-neutral-300'"
           >
             {{ String.fromCharCode(65 + idx) }}
           </div>
-          <p class="text-[14px] leading-relaxed text-neutral-100">
+          <p
+            class="text-[14px] leading-relaxed"
+            :class="selectedIndex === idx ? 'text-amber-50' : 'text-neutral-100'"
+          >
             {{ option.label }}
           </p>
         </div>
