@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  @apply bg-neutral-900 text-white font-body antialiased;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.zen-gradient-bg {
+  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.35), transparent 55%),
+    radial-gradient(circle at bottom, rgba(15, 23, 42, 0.95), #020617);
+}
+
+.zen-gold-text {
+  color: #d4af37;
+}
+
+.zen-gold-border {
+  border-color: #d4af37;
+}
+
+.zen-gold-bg {
+  background-color: #d4af37;
+}
+
+.zen-page-enter-active,
+.zen-page-leave-active {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.zen-page-enter-from,
+.zen-page-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
